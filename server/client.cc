@@ -14,7 +14,7 @@ static int call_encrypt(L4::Cap<void> const &server, unsigned char *in_buf, unsi
 
 	L4::Ipc::Iostream s(l4_utcb());
 
-	if(in_buf == NULL || size == 0 || size > L4_UTCB_GENERIC_DATA_SIZE*sizeof(l4_umword_t) || out_buf == NULL)
+	if(in_buf == NULL || size == 0 || size > (L4_UTCB_GENERIC_DATA_SIZE-2)*sizeof(l4_umword_t) || out_buf == NULL)
 		return -L4_EINVAL;
 
 	s << l4_umword_t(Opcode::func_encrypt) << L4::Ipc::Buf_cp_out<unsigned char>(in_buf, size);
@@ -29,7 +29,7 @@ static int call_decrypt(L4::Cap<void> const &server, unsigned char *in_buf, unsi
 
 	L4::Ipc::Iostream s(l4_utcb());
 
-	if(in_buf == NULL || size == 0 || size > L4_UTCB_GENERIC_DATA_SIZE*sizeof(l4_umword_t) || out_buf == NULL)
+	if(in_buf == NULL || size == 0 || size > (L4_UTCB_GENERIC_DATA_SIZE-2)*sizeof(l4_umword_t) || out_buf == NULL)
 		return -L4_EINVAL;
 
 	s << l4_umword_t(Opcode::func_decrypt) << L4::Ipc::Buf_cp_out<unsigned char>(in_buf, size);

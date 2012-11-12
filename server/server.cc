@@ -30,6 +30,8 @@ int Encryption_server::dispatch_encrypt(L4::Ipc::Iostream &ios) {
 	unsigned long buf_len = 0;
 
 	ios >> L4::Ipc::Buf_in<unsigned char>(buf, buf_len);
+	if(buf_len > (L4_UTCB_GENERIC_DATA_SIZE-2)*sizeof(l4_umword_t))
+		return -L4_EBADPROTO;
 	int ret = encrypt(buf, buf_len);
 	if(ret != L4_EOK)
 		return ret;
@@ -43,6 +45,8 @@ int Encryption_server::dispatch_decrypt(L4::Ipc::Iostream &ios) {
 	unsigned long buf_len = 0;
 
 	ios >> L4::Ipc::Buf_in<unsigned char>(buf, buf_len);
+	if(buf_len > (L4_UTCB_GENERIC_DATA_SIZE-2)*sizeof(l4_umword_t))
+		return -L4_EBADPROTO;
 	int ret = decrypt(buf, buf_len);
 	if(ret != L4_EOK)
 		return ret;
